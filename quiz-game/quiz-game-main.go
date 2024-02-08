@@ -1,5 +1,5 @@
-package main
+package quizgame
 
-func main() {
-	print("hello world")
+func runQuiz() {
+
 }
