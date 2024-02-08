@@ -1,0 +1,1 @@
+All problems were orriginally written by Jon Calhoun and are hosted at https://github.com/gophercises with associated videos at https://courses.calhoun.io/courses/cor_gophercises
