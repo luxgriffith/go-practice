@@ -1,5 +1,9 @@
-package quizgame
+package main
 
-func runQuiz() {
+func main() {
+
+}
+
+func runQuiz(path string) {
 
 }

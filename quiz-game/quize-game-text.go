@@ -1,4 +1,4 @@
-package quizgame
+package main
 
 import (
 	"testing"
@@ -16,10 +16,19 @@ func TestBadInput(t *testing.T) {
 
 }
 
-func TestTimeOutDefault(t *testing.T) {
+func TestBadPath(t *testing.T) {
 
 }
 
-func TestTimeoutUniqueTimer(t *testing.T) {
+func TestUniqueFile(t *testing.T) {
 
 }
+
+//tests for part 2
+// func TestTimeOutDefault(t *testing.T) {
+
+// }
+
+// func TestTimeoutUniqueTimer(t *testing.T) {
+
+// }
