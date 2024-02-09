@@ -26,7 +26,7 @@ func readFile(path string) (map[string]string, error) {
 		fmt.Printf("ERROR: Unable to read csv because of %v", err.Error())
 		return nil, err
 	}
-	var quiz map[string]string
+	quiz := make(map[string]string)
 	for row := range quiz_csv {
 		if len(quiz_csv[row]) != 2 {
 			fmt.Printf("ERROR: Row %v of the quiz has the incorrect number of elements", row)
