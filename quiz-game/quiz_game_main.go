@@ -33,8 +33,9 @@ func getKeys(in map[string]string) []string {
 	return r
 }
 
-func checkAnswer(correct_answer string, answer string) bool {
-	return strings.Compare(correct_answer, answer) == 0
+func checkAnswer(correct_answer string, user_answer string) bool {
+	fmt.Printf("Correct Answer: %v, User Anser: %v", correct_answer, user_answer)
+	return strings.Compare(correct_answer, user_answer) == 0
 }
 
 func readFile(path string) (map[string]string, error) {
