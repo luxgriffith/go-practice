@@ -7,27 +7,36 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 	"time"
+)
+
+var (
+	mu           sync.Mutex
+	correctCount int
 )
 
 func main() {
 	pathFlag := flag.String("file", "problems.csv", "The path to the quiz file")
+	timeLimitFlag := flag.Int("timelimit", 30, "Time until quiz ends")
 	flag.Parse()
-	time_limit := 3
+	timeLimit := *timeLimitFlag
 	quiz, err := readFile(*pathFlag)
 	if err != nil {
 		os.Exit(-1)
 	}
 
 	reader := bufio.NewReader(os.Stdin)
-	correctCount := 0
-	go timer(time_limit)
+	correctCount = 0
+	go timer(timeLimit)
 	for _, question := range getKeys(quiz) {
 		fmt.Println(question)
 		answer, _ := reader.ReadString('\n')
 		answer = strings.Replace(answer, "\n", "", -1)
 		if checkAnswer(quiz[question], answer) {
+			mu.Lock()
 			correctCount = correctCount + 1
+			mu.Unlock()
 		}
 	}
 	fmt.Printf("You got %v answers correct\n", correctCount)
@@ -35,8 +44,9 @@ func main() {
 
 func timer(timeLimit int) {
 	time.Sleep(time.Second * time.Duration(timeLimit))
-	fmt.Println("Times up!")
-	os.Exit(-1)
+	mu.Lock()
+	fmt.Printf("Times up! You got %v correct", correctCount)
+	os.Exit(0)
 }
 func getKeys(in map[string]string) []string {
 	r := make([]string, 0, len(in))
