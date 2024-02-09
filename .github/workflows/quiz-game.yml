@@ -23,7 +23,6 @@ jobs:
 
     - name: Build
       run: |
-       go mod init ./quiz-game/
        go build -v ./quiz-game/
 
     - name: Test
