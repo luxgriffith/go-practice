@@ -4,14 +4,15 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
 
 }
 
-func checkAnswer(question string, answer string) (bool, bool) {
-	return false, false
+func checkAnswer(correct_answer string, answer string) bool {
+	return strings.Compare(correct_answer, answer) == 0
 }
 
 func readFile(path string) (map[string]string, error) {

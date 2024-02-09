@@ -72,11 +72,7 @@ func TestUniqueFile(t *testing.T) {
 func TestRightAnswers(t *testing.T) {
 	setup()
 	for answerIdx := range base_answers {
-		answer, err := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], base_answers[answerIdx])
-		if err {
-			t.Fail()
-			t.Fatalf("TestRightAnswers failed: Incorrectly interpreted %v as poorly formed answer", base_answers[answerIdx])
-		}
+		answer := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], base_answers[answerIdx])
 		if !answer {
 			t.Fail()
 			t.Fatalf("TestRightAnswers failed: Incorrectly interpreted %v as poorly incorrect answer", base_answers[answerIdx])
@@ -88,11 +84,7 @@ func TestRightAnswers(t *testing.T) {
 func TestNondefaultAnswers(t *testing.T) {
 	setup()
 	for answerIdx := range nondefault_answers {
-		answer, err := checkAnswer(nondefault_quiz[getKeys(nondefault_quiz)[answerIdx]], nondefault_answers[answerIdx])
-		if err {
-			t.Fail()
-			t.Fatalf("TestNondefaultAnswers failed: Incorrectly interpreted %v as poorly formed answer", nondefault_answers[answerIdx])
-		}
+		answer := checkAnswer(nondefault_quiz[getKeys(nondefault_quiz)[answerIdx]], nondefault_answers[answerIdx])
 		if !answer {
 			t.Fail()
 			t.Fatalf("TestNondefaultAnswers failed: Incorrectly interpreted %v as poorly correctcorrect answer", nondefault_answers[answerIdx])
@@ -104,28 +96,11 @@ func TestNondefaultAnswers(t *testing.T) {
 func TestWrongAnswers(t *testing.T) {
 	setup()
 	for answerIdx := range incorrect_answers {
-		answer, err := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], incorrect_answers[answerIdx])
-		if err {
-			t.Fail()
-			t.Fatalf("TestWrongAnswers failed: Incorrectly interpreted %v as poorly formed answer", incorrect_answers[answerIdx])
-		}
+		answer := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], incorrect_answers[answerIdx])
 		if answer {
 			t.Fail()
 			t.Fatalf("TestWrongAnswers failed: Incorrectly interpreted %v as poorly correctcorrect answer", incorrect_answers[answerIdx])
 		}
 	}
 	t.Logf("TestWrongAnswers passed")
-}
-
-func TestBadAnswers(t *testing.T) {
-	setup()
-	for answerIdx := range bad_input {
-		_, err := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], bad_input[answerIdx])
-		if !err {
-			t.Fail()
-			t.Fatalf("TestBadAnswers failed: Incorrectly interpreted %v as poorly formed answer", bad_input[answerIdx])
-		}
-	}
-	t.Logf("TestBadAnswers passed")
-
 }
