@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"os"
@@ -8,7 +9,28 @@ import (
 )
 
 func main() {
+	quiz, err := readFile("problems.csv")
+	if err != nil {
+		os.Exit(-1)
+	}
+	reader := bufio.NewReader(os.Stdin)
+	correctCount := 0
+	for _, question := range getKeys(quiz) {
+		fmt.Println(question)
+		answer, _ := reader.ReadString('\n')
+		if checkAnswer(quiz[question], answer) {
+			correctCount++
+		}
+	}
+	fmt.Printf("You got %v answers correct", correctCount)
+}
 
+func getKeys(in map[string]string) []string {
+	r := make([]string, 0, len(in))
+	for k := range in {
+		r = append(r, k)
+	}
+	return r
 }
 
 func checkAnswer(correct_answer string, answer string) bool {

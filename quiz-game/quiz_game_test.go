@@ -27,14 +27,6 @@ func setup() {
 	bad_input = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"}
 }
 
-func getKeys(in map[string]string) []string {
-	r := make([]string, 0, len(in))
-	for k := range in {
-		r = append(r, k)
-	}
-	return r
-}
-
 func TestFileReader(t *testing.T) {
 	setup()
 	file_value, err := readFile(default_path)
@@ -75,7 +67,7 @@ func TestRightAnswers(t *testing.T) {
 		answer := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], base_answers[answerIdx])
 		if !answer {
 			t.Fail()
-			t.Fatalf("TestRightAnswers failed: Incorrectly interpreted %v as poorly incorrect answer", base_answers[answerIdx])
+			t.Fatalf("TestRightAnswers failed: Incorrectly interpreted %v as incorrect answer", base_answers[answerIdx])
 		}
 	}
 	t.Logf("TestRightAnswers passed")
@@ -87,7 +79,7 @@ func TestNondefaultAnswers(t *testing.T) {
 		answer := checkAnswer(nondefault_quiz[getKeys(nondefault_quiz)[answerIdx]], nondefault_answers[answerIdx])
 		if !answer {
 			t.Fail()
-			t.Fatalf("TestNondefaultAnswers failed: Incorrectly interpreted %v as poorly correctcorrect answer", nondefault_answers[answerIdx])
+			t.Fatalf("TestNondefaultAnswers failed: Incorrectly interpreted %v as  incorrect answer", nondefault_answers[answerIdx])
 		}
 	}
 	t.Logf("TestNondefaultAnswers passed")
@@ -99,7 +91,7 @@ func TestWrongAnswers(t *testing.T) {
 		answer := checkAnswer(base_quiz[getKeys(base_quiz)[answerIdx]], incorrect_answers[answerIdx])
 		if answer {
 			t.Fail()
-			t.Fatalf("TestWrongAnswers failed: Incorrectly interpreted %v as poorly correctcorrect answer", incorrect_answers[answerIdx])
+			t.Fatalf("TestWrongAnswers failed: Incorrectly interpreted %v as correct answer", incorrect_answers[answerIdx])
 		}
 	}
 	t.Logf("TestWrongAnswers passed")
