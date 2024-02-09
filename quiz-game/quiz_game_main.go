@@ -22,7 +22,7 @@ func main() {
 			correctCount++
 		}
 	}
-	fmt.Printf("You got %v answers correct", correctCount)
+	fmt.Printf("You got %v answers correct\n", correctCount)
 }
 
 func getKeys(in map[string]string) []string {
@@ -40,19 +40,19 @@ func checkAnswer(correct_answer string, answer string) bool {
 func readFile(path string) (map[string]string, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		fmt.Printf("ERROR:Unable to open file at path %v because of %v", path, err.Error())
+		fmt.Printf("ERROR:Unable to open file at path %v because of %v\n", path, err.Error())
 		return nil, err
 	}
 	defer file.Close()
 	quiz_csv, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		fmt.Printf("ERROR: Unable to read csv because of %v", err.Error())
+		fmt.Printf("ERROR: Unable to read csv because of %v\n", err.Error())
 		return nil, err
 	}
 	quiz := make(map[string]string)
 	for row := range quiz_csv {
 		if len(quiz_csv[row]) != 2 {
-			fmt.Printf("ERROR: Row %v of the quiz has the incorrect number of elements", row)
+			fmt.Printf("ERROR: Row %v of the quiz has the incorrect number of elements\n", row)
 			return nil, err
 		}
 		quiz[string(quiz_csv[row][0])] = string(quiz_csv[row][1])
