@@ -13,7 +13,7 @@ var default_path string
 var nondefault_path string
 var bad_path string
 var base_quiz map[string]string = make(map[string]string)
-var nondefault_quiz map[string]string
+var nondefault_quiz map[string]string = make(map[string]string)
 
 func setup() {
 	default_path = "problems.csv"
