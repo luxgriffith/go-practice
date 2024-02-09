@@ -18,8 +18,9 @@ func main() {
 	for _, question := range getKeys(quiz) {
 		fmt.Println(question)
 		answer, _ := reader.ReadString('\n')
+		answer = strings.Replace(answer, "\n", "", -1)
 		if checkAnswer(quiz[question], answer) {
-			correctCount++
+			correctCount = correctCount + 1
 		}
 	}
 	fmt.Printf("You got %v answers correct\n", correctCount)
