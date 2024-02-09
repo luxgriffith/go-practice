@@ -3,13 +3,16 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
 )
 
 func main() {
-	quiz, err := readFile("problems.csv")
+	pathFlag := flag.String("file", "problems.csv", "The path to the quiz file")
+	flag.Parse()
+	quiz, err := readFile(*pathFlag)
 	if err != nil {
 		os.Exit(-1)
 	}
