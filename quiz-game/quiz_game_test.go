@@ -12,7 +12,7 @@ var nondefault_answers []string
 var default_path string
 var nondefault_path string
 var bad_path string
-var base_quiz map[string]string
+var base_quiz map[string]string = make(map[string]string)
 var nondefault_quiz map[string]string
 
 func setup() {
