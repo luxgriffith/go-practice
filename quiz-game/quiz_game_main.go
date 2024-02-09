@@ -34,7 +34,7 @@ func getKeys(in map[string]string) []string {
 }
 
 func checkAnswer(correct_answer string, user_answer string) bool {
-	fmt.Printf("Correct Answer: %v, User Anser: %v", correct_answer, user_answer)
+	fmt.Printf("Correct Answer: %v, User Anser: %v\n", correct_answer, user_answer)
 	return strings.Compare(correct_answer, user_answer) == 0
 }
 
