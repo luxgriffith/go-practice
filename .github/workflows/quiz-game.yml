@@ -22,8 +22,9 @@ jobs:
         go-version: '1.20'
 
     - name: Build
-      run: go mod init ./quiz-game/
-      run: go build -v ./quiz-game/
+      run: |
+       go mod init ./quiz-game/
+       go build -v ./quiz-game/
 
     - name: Test
       run: go test -v ./quiz-game/
