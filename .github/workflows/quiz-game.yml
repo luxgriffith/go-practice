@@ -23,6 +23,7 @@ jobs:
 
     - name: Build
       run: |
+       git init
        go build -v ./quiz-game/
 
     - name: Test
