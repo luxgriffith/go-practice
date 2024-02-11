@@ -4,6 +4,18 @@ import (
 	"net/http"
 )
 
+type MapHandlerVars struct {
+	pathsToUrls map[string]string
+	fallback    http.Handler
+}
+
+func (m *MapHandlerVars) New(pathsToUrls map[string]string, fallback http.Handler) {
+	m.pathsToUrls = pathsToUrls
+	m.fallback = fallback
+}
+
+var mapVars MapHandlerVars
+
 // MapHandler will return an http.HandlerFunc (which also
 // implements http.Handler) that will attempt to map any
 // paths (keys in the map) to their corresponding URL (values
@@ -11,8 +23,18 @@ import (
 // If the path is not provided in the map, then the fallback
 // http.Handler will be called instead.
 func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.HandlerFunc {
-	//	TODO: Implement this...
-	return nil
+	mapVars = MapHandlerVars{pathsToUrls: pathsToUrls, fallback: fallback}
+	return http.HandlerFunc(mapHandlerFunc)
+}
+
+func mapHandlerFunc(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	mapUrl := mapVars.pathsToUrls[path]
+	if mapUrl != "" {
+		http.RedirectHandler(mapUrl, 301).ServeHTTP(w, r)
+	} else {
+		mapVars.fallback.ServeHTTP(w, r)
+	}
 }
 
 // YAMLHandler will parse the provided YAML and then return
