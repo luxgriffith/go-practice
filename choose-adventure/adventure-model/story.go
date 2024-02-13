@@ -12,6 +12,10 @@ type Story struct {
 	arcs map[string]*Arc
 }
 
+func (s *Story) GetArcs() map[string]*Arc {
+	return s.arcs
+}
+
 // Return a string that represents the contents of the story for testing and debugging purposes
 func (s *Story) toString() string {
 	outList := make([]string, len(s.getArcTitles()))

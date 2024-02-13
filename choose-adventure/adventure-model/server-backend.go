@@ -3,11 +3,24 @@ package adventure_model
 import (
 	"errors"
 	"fmt"
+	"net/http"
 )
 
-// Defines the thread that runs the actual http server
-func runServer() {
+var CurrentArc *Arc
 
+// Defines the thread that runs the actual http server
+func RunServer(startingArc *Arc) {
+	CurrentArc = startingArc
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", changeArc)
+	err := http.ListenAndServe(":3333", mux)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func changeArc(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Change Arc request recieved")
 }
 
 // Takes in an option the user picked and the story, and returns the arc that option leads to and its title, as well as an optional error
