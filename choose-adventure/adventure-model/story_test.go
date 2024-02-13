@@ -25,7 +25,7 @@ func setupTestVars() {
 						arcTitle: "Foo",
 					},
 					{
-						text:     "OptionBarr",
+						text:     "OptionBar",
 						arcTitle: "Bar",
 					},
 				},
@@ -119,7 +119,7 @@ func setupTestVars() {
 	expectedArcString = "foo, foo2\tOptionBar, Bar"
 	expectedOptionString = "OptionFoo, Foo"
 	expectedArcTitleList = []string{"intro", "Foo", "Bar"}
-	expectedStoryString = "intro:intro\tOptionFoo, Foo; OptionBar, Bar\nFoo:foo, foo2\tOptionBar, Bar\nBar:\t"
+	expectedStoryString = "intro:intro\tOptionFoo, Foo; OptionBar, Bar\nFoo:foo, foo2\tOptionBar, Bar\nBar:\n"
 }
 
 func TestOptionToString(t *testing.T) {
@@ -186,7 +186,7 @@ func TestBuildFromMapValid(t *testing.T) {
 func TestBuildFromMapInValid(t *testing.T) {
 	setupTestVars()
 	resultStory := &Story{make(map[string]*Arc)}
-	err := resultStory.buildFromMap(testValidJson)
+	err := resultStory.buildFromMap(testInvalidJson)
 	if err == nil {
 		t.Fail()
 		t.Fatalf("TestBuildFromMapInValid failed, no error triggered")

@@ -3,6 +3,8 @@ package adventure_model
 import (
 	"errors"
 	"fmt"
+	"sort"
+	"strings"
 )
 
 // The Object that defines the story
@@ -12,14 +14,12 @@ type Story struct {
 
 // Return a string that represents the contents of the story for testing and debugging purposes
 func (s *Story) toString() string {
-	out := ""
-	for idx, arcTitle := range s.getArcTitles() {
-		out = out + arcTitle + ":" + s.arcs[arcTitle].toString()
-		if idx == len(s.getArcTitles())-1 {
-			out += "\n"
-		}
+	outList := make([]string, len(s.getArcTitles()))
+	for _, arcTitle := range s.getArcTitles() {
+		outList = append(outList, (arcTitle + ":" + s.arcs[arcTitle].toString()))
 	}
-	return out
+	sort.Sort(sort.Reverse(sort.StringSlice(outList)))
+	return strings.Join(outList, "\n")
 }
 
 func (s *Story) buildFromMap(input map[string]interface{}) error {
@@ -67,8 +67,8 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 						default:
 							return errors.New(fmt.Sprintf("Arc %v has an option with an invalid key %v", arcTitle, optionsMapKey))
 						}
-						options = append(options, &Option{text: text, arcTitle: optionArcTitle})
 					}
+					options = append(options, &Option{text: text, arcTitle: optionArcTitle})
 				}
 			case "story":
 				storyTextList, ok := arcMap[arcMapKey].([]string)
