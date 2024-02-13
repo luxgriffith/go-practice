@@ -9,6 +9,6 @@ func (p *Page) New() {
 }
 
 // Load the data of a given arc into the page
-func (p *Page) addArch(arc *Arc) {
+func (p *Page) addArch() {
 
 }
