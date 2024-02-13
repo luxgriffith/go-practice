@@ -1,5 +1,10 @@
 package adventure_model
 
+import (
+	"errors"
+	"fmt"
+)
+
 // The Object that defines the story
 type Story struct {
 	arcs map[string]*Arc
@@ -17,7 +22,70 @@ func (s *Story) toString() string {
 	return out
 }
 
-func (s *Story) buildFromMap(map[string]interface{}) error {
+func (s *Story) buildFromMap(input map[string]interface{}) error {
+	s.arcs = make(map[string]*Arc)
+	for arcTitle := range input {
+		arc := input[arcTitle]
+		arcMap, isMap := arc.(map[string]interface{})
+		if arcMap == nil || !isMap {
+			return errors.New(fmt.Sprintf("Arc %v isn't tied to a map", arcTitle))
+		}
+		if len(arcMap) != 2 {
+			return errors.New(fmt.Sprintf("Arc %v's map has to many values", arcTitle))
+		}
+		var story []string
+		var options []*Option
+		for arcMapKey := range arcMap {
+			switch arcMapKey {
+			case "options":
+				optionsMapList, isMapList := arcMap[arcMapKey].([]map[string]interface{})
+				if !isMapList {
+					return errors.New(fmt.Sprintf("Arc %v's options aren't a list of maps", arcTitle))
+				}
+				for _, optionsMap := range optionsMapList {
+					if len(optionsMap) != 2 {
+						return errors.New(fmt.Sprintf("Arc %v has an option with the wrong number of elements", arcTitle))
+					}
+					var text string
+					var optionArcTitle string
+					for optionsMapKey := range optionsMap {
+						switch optionsMapKey {
+						case "text":
+							textVal, ok := optionsMap[optionsMapKey].(string)
+							if !ok {
+								return errors.New(fmt.Sprintf("Option in arc %v has text that isn't a string: %v", arcTitle, textVal))
+							} else {
+								text = textVal
+							}
+						case "arc":
+							textVal, ok := optionsMap[optionsMapKey].(string)
+							if !ok {
+								return errors.New(fmt.Sprintf("Option in arc %v has an arc that isn't a string: %v", arcTitle, textVal))
+							} else {
+								optionArcTitle = textVal
+							}
+						default:
+							return errors.New(fmt.Sprintf("Arc %v has an option with an invalid key %v", arcTitle, optionsMapKey))
+						}
+						options = append(options, &Option{text: text, arcTitle: optionArcTitle})
+					}
+				}
+			case "story":
+				storyTextList, ok := arcMap[arcMapKey].([]string)
+				if !ok {
+					return errors.New(fmt.Sprintf("Arc %v has a story that isn't a list of strings", arcTitle))
+				} else {
+					story = storyTextList
+				}
+			default:
+				return errors.New(fmt.Sprintf("Arc %v's map has an invalid key %v", arcTitle, arcMapKey))
+			}
+		}
+		s.arcs[arcTitle] = &Arc{
+			text:    story,
+			options: options,
+		}
+	}
 	return nil
 }
 
