@@ -1,15 +1,77 @@
 {
-    "story-arc": {
-      "title": "A title for that story arc. Think of it like a chapter title.",
+    "intro": {
+      "title": "Intro",
       "story": [
-        "A series of paragraphs, each represented as a string in a slice.",
-        "This is a new paragraph in this particular story arc."
+        "Intro to story",
+        "a paragraph",
+        "another paragraph",
+        "weeeeeeee"
       ],
       "options": [
         {
-          "text": "the text to render for this option. eg 'venture down the dark passage'",
-          "arc": "the name of the story arc to navigate to. This will match the story-arc key at the very root of the JSON document"
+          "text": "Option A",
+          "arc": "A"
+        },
+        {
+          "text": "Option B",
+          "arc": "B"
+        },
+        {
+          "text": "Option C",
+          "arc": "C"
         }
+      ]
+    },
+    "A": {
+      "title": "A",
+      "story": [
+        "Option A's Story",
+        "a paragraph",
+        "another paragraph",
+        "weeeeeeee",
+        "your stuck teehee"
+      ],
+      "options": [
+        {
+          "text": "Option A",
+          "arc": "B"
+        }
+      ]
+    },
+    "B": {
+      "title": "B",
+      "story": [
+        "Option B's Story",
+        "a paragraph",
+        "another paragraph",
+        "weeeeeeee",
+        "jail time"
+      ],
+      "options": [
+        {
+          "text": "Option A",
+          "arc": "A"
+        }
+      ]
+    },
+    "C": {
+      "title": "C",
+      "story": [
+      ],
+      "options": [
+        {
+          "text": "Option D",
+          "arc": "D"
+        }
+      ]
+    },
+    "D": {
+      "title": "D",
+      "story": [
+        "YOU DIED",
+        "insert dark souls noise"
+      ],
+      "options": [
       ]
     }
   }
