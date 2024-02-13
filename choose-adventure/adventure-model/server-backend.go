@@ -1,16 +1,21 @@
 package adventure_model
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 )
 
-var CurrentArc *Arc
+var currentArc *Arc
+var story *Story
 
 // Defines the thread that runs the actual http server
-func RunServer(startingArc *Arc) {
-	CurrentArc = startingArc
+func RunServer(inStory *Story) {
+	story = inStory
+	currentArc = story.arcs["intro"]
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", presentSite)
 	mux.HandleFunc("/change-arc", changeArc)
@@ -21,10 +26,66 @@ func RunServer(startingArc *Arc) {
 }
 
 func presentSite(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(CurrentArc.toString()))
+	w.Write([]byte(currentArc.toString()))
 }
+
 func changeArc(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Change Arc request recieved")
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("could not read body: %s\n", err)
+		writeErrorResponse(w, err)
+		return
+	}
+	bodyJson := make(map[string]interface{})
+	err = json.Unmarshal(body, &bodyJson)
+	if err != nil {
+		fmt.Printf("Could not unmarshal json: %s\n", err)
+		writeErrorResponse(w, err)
+		return
+	}
+	optionText, ok1 := bodyJson["text"].(string)
+	optionArcTitle, ok2 := bodyJson["title"].(string)
+	if !(ok1 && ok2) {
+		fmt.Printf("Option Values are not strings")
+		err := errors.New(fmt.Sprintf("Option Text %v or Option Arc %v are not the correct type (String)", bodyJson["text"], bodyJson["title"]))
+		writeErrorResponse(w, err)
+		return
+	}
+	option := &Option{
+		text:     optionText,
+		arcTitle: optionArcTitle,
+	}
+	title, arc, err := getNextArc(option, story)
+	if err != nil {
+		fmt.Printf("Error while getting next arc")
+		writeErrorResponse(w, err)
+		return
+	}
+	currentArc = arc
+	w.WriteHeader(http.StatusAccepted)
+	w.Header().Set("Content-Type", "application/json")
+	arcMap := arc.toMap()
+	resp := make(map[string]interface{})
+	resp["title"] = title
+	resp["arc"] = arcMap
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+	}
+	w.Write(jsonResp)
+}
+
+func writeErrorResponse(w http.ResponseWriter, err error) {
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Header().Set("Content-Type", "application/json")
+	resp := make(map[string]string)
+	resp["message"] = err.Error()
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+	}
+	w.Write(jsonResp)
 }
 
 // Takes in an option the user picked and the story, and returns the arc that option leads to and its title, as well as an optional error

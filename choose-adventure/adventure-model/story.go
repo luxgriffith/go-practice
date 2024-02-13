@@ -159,6 +159,18 @@ func (a *Arc) toString() string {
 	return out
 }
 
+func (a *Arc) toMap() map[string]interface{} {
+	out := make(map[string]interface{})
+	out["title"] = a.title
+	out["story"] = a.text
+	outOptions := make([]interface{}, len(a.options))
+	for _, option := range a.options {
+		outOptions = append(outOptions, option.toMap())
+	}
+	out["options"] = outOptions
+	return out
+}
+
 // The object that defines an option in an arc
 type Option struct {
 	text     string
@@ -168,4 +180,11 @@ type Option struct {
 // Return a string that represents the contents of the Option for testing and debugging purposes
 func (o *Option) toString() string {
 	return o.text + ", " + o.arcTitle
+}
+
+func (o *Option) toMap() map[string]interface{} {
+	out := make(map[string]interface{})
+	out["text"] = o.text
+	out["arcTitle"] = o.arcTitle
+	return out
 }
