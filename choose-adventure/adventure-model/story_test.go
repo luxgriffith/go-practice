@@ -170,7 +170,7 @@ func TestStoryToString(t *testing.T) {
 
 func TestBuildFromMapValid(t *testing.T) {
 	setupTestVars()
-	var resultStory *Story
+	resultStory := &Story{make(map[string]*Arc)}
 	err := resultStory.buildFromMap(testValidJson)
 	if err != nil {
 		t.Fail()
@@ -185,7 +185,7 @@ func TestBuildFromMapValid(t *testing.T) {
 
 func TestBuildFromMapInValid(t *testing.T) {
 	setupTestVars()
-	var resultStory *Story
+	resultStory := &Story{make(map[string]*Arc)}
 	err := resultStory.buildFromMap(testValidJson)
 	if err == nil {
 		t.Fail()

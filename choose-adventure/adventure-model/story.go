@@ -23,7 +23,7 @@ func (s *Story) toString() string {
 }
 
 func (s *Story) buildFromMap(input map[string]interface{}) error {
-	s.arcs = make(map[string]*Arc)
+	newStory := make(map[string]*Arc)
 	for arcTitle := range input {
 		arc := input[arcTitle]
 		arcMap, isMap := arc.(map[string]interface{})
@@ -81,11 +81,12 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 				return errors.New(fmt.Sprintf("Arc %v's map has an invalid key %v", arcTitle, arcMapKey))
 			}
 		}
-		s.arcs[arcTitle] = &Arc{
+		newStory[arcTitle] = &Arc{
 			text:    story,
 			options: options,
 		}
 	}
+	s.arcs = newStory
 	return nil
 }
 
