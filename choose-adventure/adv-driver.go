@@ -7,5 +7,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	go adventure_model.RunServer(story.GetArcs()["intro"])
+	adventure_model.RunServer(story.GetArcs()["intro"])
 }

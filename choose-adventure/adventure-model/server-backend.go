@@ -12,13 +12,17 @@ var CurrentArc *Arc
 func RunServer(startingArc *Arc) {
 	CurrentArc = startingArc
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", changeArc)
+	mux.HandleFunc("/", presentSite)
+	mux.HandleFunc("/change-arc", changeArc)
 	err := http.ListenAndServe(":3333", mux)
 	if err != nil {
 		panic(err)
 	}
 }
 
+func presentSite(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(CurrentArc.toString()))
+}
 func changeArc(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Change Arc request recieved")
 }
