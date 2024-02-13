@@ -13,10 +13,16 @@ func readStory(path string) (*Story, error) {
 		fmt.Printf("Error reading file: %v\n", err.Error())
 		return nil, err
 	}
-	var story *Story
-	err = json.Unmarshal(fileData, &story)
+	story_json := make(map[string]interface{})
+	err = json.Unmarshal(fileData, &story_json)
 	if err != nil {
 		fmt.Printf("Error while unmarshalling json: %v\n", err.Error())
+		return nil, err
+	}
+	story := &Story{make(map[string]*Arc)}
+	err = story.buildFromMap(story_json)
+	if err != nil {
+		fmt.Printf("Error while building story: %v\n", err.Error())
 		return nil, err
 	}
 	return story, nil
