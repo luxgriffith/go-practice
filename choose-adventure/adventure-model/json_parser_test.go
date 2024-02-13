@@ -1,7 +1,6 @@
 package adventure_model
 
 import (
-	"maps"
 	"testing"
 )
 
@@ -106,9 +105,9 @@ func TestReadableStory(t *testing.T) {
 		t.Fail()
 		t.Fatalf("TestReadableStory failed: %v", err.Error())
 	}
-	if !maps.Equal(resultStory.arcs, ExpectedStory.arcs) {
+	if resultStory.toString() != ExpectedStory.toString() {
 		t.Fail()
-		t.Fatalf("TestReadableStory failed: Expected %v got %v", ExpectedStory.arcs, resultStory.arcs)
+		t.Fatalf("TestReadableStory Failed, story mismatch. Expected %v got %v", ExpectedStory.toString(), resultStory.toString())
 	}
 	t.Logf("TestReadableStory Passed")
 }
