@@ -1,4 +1,4 @@
-package adventure
+package adventure_model
 
 // The Object that defines the story
 type Story struct {

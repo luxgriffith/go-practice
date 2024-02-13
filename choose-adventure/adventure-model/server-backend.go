@@ -1,4 +1,4 @@
-package adventure
+package adventure_model
 
 // Defines the thread that runs the actual http server
 func runServer() {

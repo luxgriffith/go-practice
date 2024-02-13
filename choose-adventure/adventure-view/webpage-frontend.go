@@ -1,4 +1,4 @@
-package adventure
+package adventure_view
 
 type Page struct {
 }
