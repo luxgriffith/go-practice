@@ -10,6 +10,7 @@ import (
 
 	adventure_model "github.com/griffithscg/go-practice/choose-adventure/adventure-model"
 	error_page "github.com/griffithscg/go-practice/choose-adventure/adventure-view/error-page"
+	story_page "github.com/griffithscg/go-practice/choose-adventure/adventure-view/story-page"
 )
 
 var currentArc *adventure_model.Arc
@@ -20,7 +21,7 @@ var errorPage bool
 func RunServer(inStory *adventure_model.Story, workingSite http.Handler, errorSite http.Handler) {
 	story = inStory
 	currentArc = story.GetArcs()["intro"]
-	errorPage = true
+	errorPage = false
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", redirectToPage)
 	mux.Handle("/story-page/", http.StripPrefix("/story-page/", workingSite))
@@ -98,6 +99,8 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Error happened in JSON marshal. Err: %s", err)
 	}
 	w.Write(jsonResp)
+	story_page.BuildStoryPage(arcMap)
+	redirectToPage(w, r)
 }
 
 func writeErrorResponse(w http.ResponseWriter, err error) {
