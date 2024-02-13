@@ -10,6 +10,7 @@ func setupTestStory() {
 	ExpectedStory = &Story{
 		arcs: map[string]*Arc{
 			"intro": {
+				title: "Intro",
 				text: []string{
 					"Intro to story",
 					"a paragraph",
@@ -31,6 +32,7 @@ func setupTestStory() {
 				},
 			},
 			"A": {
+				title: "A",
 				text: []string{
 					"Option A's Story",
 					"a paragraph",
@@ -46,6 +48,7 @@ func setupTestStory() {
 				},
 			},
 			"B": {
+				title: "B",
 				text: []string{
 					"Option B's Story",
 					"a paragraph",
@@ -61,7 +64,8 @@ func setupTestStory() {
 				},
 			},
 			"C": {
-				text: []string{},
+				title: "C",
+				text:  []string{},
 				options: []*Option{
 					{
 						text:     "Option D",
@@ -70,6 +74,7 @@ func setupTestStory() {
 				},
 			},
 			"D": {
+				title: "D",
 				text: []string{
 					"YOU DIED",
 					"insert dark souls noise",

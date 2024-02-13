@@ -45,12 +45,30 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 				} else {
 					title = titleContent
 				}
-			case "options":
-				optionsMapList, isMapList := arcMap[arcMapKey].([]map[string]interface{})
-				if !isMapList {
-					return errors.New(fmt.Sprintf("Arc %v's options aren't a list of maps", arcTitle))
+			case "story":
+				storyTextList, ok := arcMap[arcMapKey].([]interface{})
+				if !ok {
+					return errors.New(fmt.Sprintf("Arc %v has a story %v that isn't a list", arcTitle, arcMap[arcMapKey]))
+				} else {
+					for _, paragraph := range storyTextList {
+						paragraphContent, ok := paragraph.(string)
+						if !ok {
+							return errors.New(fmt.Sprintf("Arc %v has a paragraph in its story %v that isn't a string", arcTitle, paragraph))
+						} else {
+							story = append(story, paragraphContent)
+						}
+					}
 				}
-				for _, optionsMap := range optionsMapList {
+			case "options":
+				optionsList, isList := arcMap[arcMapKey].([]interface{})
+				if !isList {
+					return errors.New(fmt.Sprintf("Arc %v's options aren't a list", arcTitle))
+				}
+				for _, optionsElement := range optionsList {
+					optionsMap, isMap := optionsElement.(map[string]interface{})
+					if !isMap {
+						return errors.New(fmt.Sprintf("Arc %v's option %v is not a map", arcTitle, optionsElement))
+					}
 					if len(optionsMap) != 2 {
 						return errors.New(fmt.Sprintf("Arc %v has an option with the wrong number of elements", arcTitle))
 					}
@@ -77,13 +95,6 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 						}
 					}
 					options = append(options, &Option{text: text, arcTitle: optionArcTitle})
-				}
-			case "story":
-				storyTextList, ok := arcMap[arcMapKey].([]string)
-				if !ok {
-					return errors.New(fmt.Sprintf("Arc %v has a story that isn't a list of strings", arcTitle))
-				} else {
-					story = storyTextList
 				}
 			default:
 				return errors.New(fmt.Sprintf("Arc %v's map has an invalid key %v", arcTitle, arcMapKey))
