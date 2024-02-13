@@ -35,16 +35,21 @@ type Arc struct {
 // Return a string that represents the contents of the arc for testing and debugging purposes
 func (a *Arc) toString() string {
 	out := ""
-	for idx, paragraph := range a.text {
-		out += paragraph
-		if idx != len(a.text)-1 {
-			out += ", "
+	if a.text != nil {
+		for idx, paragraph := range a.text {
+			out += paragraph
+			if idx != len(a.text)-1 {
+				out += ", "
+			}
 		}
 	}
-	for idx, option := range a.options {
-		out += option.toString()
-		if idx != len(a.options)-1 {
-			out += ", "
+	out += "\t"
+	if a.options != nil {
+		for idx, option := range a.options {
+			out += option.toString()
+			if idx != len(a.options)-1 {
+				out += "; "
+			}
 		}
 	}
 	return out
