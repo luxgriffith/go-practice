@@ -11,5 +11,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	adventure_model.RunServer(story, http.FileServer(http.Dir("./adventure-view/base-page")))
+	adventure_model.RunServer(story, http.FileServer(http.Dir("./adventure-view/base-page")), http.FileServer(http.Dir("./adventure-view/error-page")))
 }

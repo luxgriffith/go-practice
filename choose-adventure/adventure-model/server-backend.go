@@ -14,13 +14,14 @@ var story *Story
 var errorPage bool
 
 // Defines the thread that runs the actual http server
-func RunServer(inStory *Story, workingSite http.Handler) {
+func RunServer(inStory *Story, workingSite http.Handler, errorSite http.Handler) {
 	story = inStory
 	currentArc = story.arcs["intro"]
-	errorPage = false
+	errorPage = true
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", redirectToPage)
 	mux.Handle("/story-page/", http.StripPrefix("/story-page/", workingSite))
+	mux.Handle("/error-page/", http.StripPrefix("/error-page/", errorSite))
 	mux.HandleFunc("/change-arc", changeArc)
 	err := http.ListenAndServe(":3333", mux)
 	if err != nil {
@@ -34,7 +35,7 @@ func redirectToPage(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Redirecting to %v", r.URL.String())
 		http.RedirectHandler(r.URL.String(), 301).ServeHTTP(w, r)
 	} else {
-		r.URL.Path = "/error-page/"
+		r.URL.Path = "/error-page/error-page.html"
 		fmt.Printf("Redirecting to %v", r.URL.String())
 		http.RedirectHandler(r.URL.String(), 301).ServeHTTP(w, r)
 	}
