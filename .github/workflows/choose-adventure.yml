@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./quiz-game/
+        working-directory: ./choose-adventure/
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go
