@@ -1,6 +1,7 @@
 package adventure_model
 
 import (
+	"sort"
 	"testing"
 )
 
@@ -127,7 +128,8 @@ func setupTestVars() {
 	}
 	expectedArcString = "Foo\tfoo, foo2\tOptionBar, Bar"
 	expectedOptionString = "OptionFoo, Foo"
-	expectedArcTitleList = []string{"intro", "Foo", "Bar"}
+	expectedArcTitleList = []string{"Foo", "Bar", "intro"}
+	sort.Sort(sort.Reverse(sort.StringSlice(expectedArcTitleList)))
 }
 
 func TestOptionToString(t *testing.T) {
@@ -153,6 +155,7 @@ func TestArcToString(t *testing.T) {
 func TestGetArcTitles(t *testing.T) {
 	setupTestVars()
 	resultArcTitleList := testStory.getArcTitles()
+	sort.Sort(sort.Reverse(sort.StringSlice(resultArcTitleList)))
 	if len(resultArcTitleList) != len(expectedArcTitleList) {
 		t.Fail()
 		t.Fatalf("TestGetArcTitles failed, expected %v got %v", expectedArcTitleList, resultArcTitleList)
