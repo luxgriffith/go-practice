@@ -134,7 +134,7 @@ func setupTestVars() {
 
 func TestOptionToString(t *testing.T) {
 	setupTestVars()
-	resultOptionString := testOption.toString()
+	resultOptionString := testOption.ToString()
 	if resultOptionString != expectedOptionString {
 		t.Fail()
 		t.Fatalf("testOptionToString Failed, expected %v got %v", expectedOptionString, resultOptionString)
@@ -144,7 +144,7 @@ func TestOptionToString(t *testing.T) {
 
 func TestArcToString(t *testing.T) {
 	setupTestVars()
-	resultArcString := testArc.toString()
+	resultArcString := testArc.ToString()
 	if resultArcString != expectedArcString {
 		t.Fail()
 		t.Fatalf("TestArcString Failed, expected %v got %v", expectedArcString, resultArcString)
@@ -177,9 +177,9 @@ func TestBuildFromMapValid(t *testing.T) {
 		t.Fail()
 		t.Fatalf("TestBuildFromMapValid failed, triggered error %v", err.Error())
 	}
-	if resultStory.toString() != testStory.toString() {
+	if resultStory.ToString() != testStory.ToString() {
 		t.Fail()
-		t.Fatalf("TestBuildFromMapValid failed, expected %v got %v", testStory.toString(), resultStory.toString())
+		t.Fatalf("TestBuildFromMapValid failed, expected %v got %v", testStory.ToString(), resultStory.ToString())
 	}
 	t.Logf("TestBuildFromMapValid passed")
 }

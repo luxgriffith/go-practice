@@ -1,18 +1,23 @@
-package adventure_model
+package adventure_controller
 
 import (
 	"testing"
+
+	adventure_model "github.com/griffithscg/go-practice/choose-adventure/adventure-model"
 )
+
+var expectedStory *adventure_model.Story
+
+func setupTestStory() {
+}
 
 func TestGetNextArc(t *testing.T) {
 	setupTestStory()
 	expectedTitle := "A"
-	expectedArc := ExpectedStory.arcs[expectedTitle]
-	inputOption := &Option{
-		text:     "Option A",
-		arcTitle: "A",
-	}
-	inputStory, _ := ReadStory("../story.json")
+	expectedStory, _ = adventure_model.ReadStory("../story.json")
+	expectedArc := expectedStory.GetArcs()[expectedTitle]
+	inputOption := adventure_model.NewOption("Option A", "A")
+	inputStory, _ := adventure_model.ReadStory("../story.json")
 	resultTitle, resultArc, err := getNextArc(inputOption, inputStory)
 	if err != nil {
 		t.Fail()
@@ -22,9 +27,9 @@ func TestGetNextArc(t *testing.T) {
 		t.Fail()
 		t.Fatalf("TestGetNextArc Failed, title mismatch: Expected %v, got %v", expectedTitle, resultTitle)
 	}
-	if expectedArc.toString() != resultArc.toString() {
+	if expectedArc.ToString() != resultArc.ToString() {
 		t.Fail()
-		t.Fatalf("TestGetNextArc Failed, arc mismatch: expected %v, got %v", expectedArc.toString(), resultArc.toString())
+		t.Fatalf("TestGetNextArc Failed, arc mismatch: expected %v, got %v", expectedArc.ToString(), resultArc.ToString())
 	}
 	t.Logf("TestGetNextArc Passed")
 }

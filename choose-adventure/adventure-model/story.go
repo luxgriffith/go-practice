@@ -17,10 +17,10 @@ func (s *Story) GetArcs() map[string]*Arc {
 }
 
 // Return a string that represents the contents of the story for testing and debugging purposes
-func (s *Story) toString() string {
+func (s *Story) ToString() string {
 	outList := make([]string, len(s.getArcTitles()))
 	for _, arcTitle := range s.getArcTitles() {
-		outList = append(outList, (arcTitle + ":" + s.arcs[arcTitle].toString()))
+		outList = append(outList, (arcTitle + ":" + s.arcs[arcTitle].ToString()))
 	}
 	sort.Sort(sort.Reverse(sort.StringSlice(outList)))
 	return strings.Join(outList, "\n")
@@ -137,7 +137,7 @@ type Arc struct {
 }
 
 // Return a string that represents the contents of the arc for testing and debugging purposes
-func (a *Arc) toString() string {
+func (a *Arc) ToString() string {
 	out := a.title + "\t"
 	if a.text != nil {
 		for idx, paragraph := range a.text {
@@ -150,7 +150,7 @@ func (a *Arc) toString() string {
 	out += "\t"
 	if a.options != nil {
 		for idx, option := range a.options {
-			out += option.toString()
+			out += option.ToString()
 			if idx != len(a.options)-1 {
 				out += "; "
 			}
@@ -159,7 +159,7 @@ func (a *Arc) toString() string {
 	return out
 }
 
-func (a *Arc) toMap() map[string]interface{} {
+func (a *Arc) ToMap() map[string]interface{} {
 	out := make(map[string]interface{})
 	out["title"] = a.title
 	out["story"] = a.text
@@ -177,9 +177,20 @@ type Option struct {
 	arcTitle string
 }
 
+func NewOption(text string, arcTitle string) *Option {
+	return &Option{
+		text:     text,
+		arcTitle: arcTitle,
+	}
+}
+
 // Return a string that represents the contents of the Option for testing and debugging purposes
-func (o *Option) toString() string {
+func (o *Option) ToString() string {
 	return o.text + ", " + o.arcTitle
+}
+
+func (o *Option) GetArcTitle() string {
+	return o.arcTitle
 }
 
 func (o *Option) toMap() map[string]interface{} {

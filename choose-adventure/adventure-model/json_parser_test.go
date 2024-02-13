@@ -110,9 +110,9 @@ func TestReadableStory(t *testing.T) {
 		t.Fail()
 		t.Fatalf("TestReadableStory failed: %v", err.Error())
 	}
-	if resultStory.toString() != ExpectedStory.toString() {
+	if resultStory.ToString() != ExpectedStory.ToString() {
 		t.Fail()
-		t.Fatalf("TestReadableStory Failed, story mismatch. Expected %v got %v", ExpectedStory.toString(), resultStory.toString())
+		t.Fatalf("TestReadableStory Failed, story mismatch. Expected %v got %v", ExpectedStory.ToString(), resultStory.ToString())
 	}
 	t.Logf("TestReadableStory Passed")
 }

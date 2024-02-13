@@ -1,4 +1,4 @@
-package adventure_model
+package adventure_controller
 
 import (
 	"encoding/json"
@@ -7,16 +7,18 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	adventure_model "github.com/griffithscg/go-practice/choose-adventure/adventure-model"
 )
 
-var currentArc *Arc
-var story *Story
+var currentArc *adventure_model.Arc
+var story *adventure_model.Story
 var errorPage bool
 
 // Defines the thread that runs the actual http server
-func RunServer(inStory *Story, workingSite http.Handler, errorSite http.Handler) {
+func RunServer(inStory *adventure_model.Story, workingSite http.Handler, errorSite http.Handler) {
 	story = inStory
-	currentArc = story.arcs["intro"]
+	currentArc = story.GetArcs()["intro"]
 	errorPage = true
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", redirectToPage)
@@ -64,10 +66,7 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 		writeErrorResponse(w, err)
 		return
 	}
-	option := &Option{
-		text:     optionText,
-		arcTitle: optionArcTitle,
-	}
+	option := adventure_model.NewOption(optionText, optionArcTitle)
 	title, arc, err := getNextArc(option, story)
 	if err != nil {
 		fmt.Printf("Error while getting next arc")
@@ -77,7 +76,7 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	currentArc = arc
 	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "application/json")
-	arcMap := arc.toMap()
+	arcMap := arc.ToMap()
 	resp := make(map[string]interface{})
 	resp["title"] = title
 	resp["arc"] = arcMap
@@ -101,11 +100,11 @@ func writeErrorResponse(w http.ResponseWriter, err error) {
 }
 
 // Takes in an option the user picked and the story, and returns the arc that option leads to and its title, as well as an optional error
-func getNextArc(option *Option, story *Story) (title string, arc *Arc, err error) {
+func getNextArc(option *adventure_model.Option, story *adventure_model.Story) (title string, arc *adventure_model.Arc, err error) {
 	if option == nil || story == nil {
 		return "", nil, errors.New(fmt.Sprintf("Recieved nil input"))
 	}
-	nextArcTitle := option.arcTitle
-	nextArc := story.arcs[nextArcTitle]
+	nextArcTitle := option.GetArcTitle()
+	nextArc := story.GetArcs()[nextArcTitle]
 	return nextArcTitle, nextArc, nil
 }
