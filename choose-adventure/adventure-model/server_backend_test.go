@@ -12,7 +12,7 @@ func TestGetNextArc(t *testing.T) {
 		text:     "Option A",
 		arcTitle: "A",
 	}
-	inputStory, _ := readStory("../story.json")
+	inputStory, _ := ReadStory("../story.json")
 	resultTitle, resultArc, err := getNextArc(inputOption, inputStory)
 	if err != nil {
 		t.Fail()

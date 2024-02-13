@@ -7,7 +7,7 @@ import (
 )
 
 // Method that takes in a file path, and returns a Story object and nil on success or nil and an error on failure
-func readStory(path string) (*Story, error) {
+func ReadStory(path string) (*Story, error) {
 	fileData, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Printf("Error reading file: %v\n", err.Error())

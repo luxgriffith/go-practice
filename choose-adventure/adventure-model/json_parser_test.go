@@ -86,7 +86,7 @@ func setupTestStory() {
 }
 
 func TestBadPath(t *testing.T) {
-	_, err := readStory("lolololol")
+	_, err := ReadStory("lolololol")
 	if err == nil {
 		t.Fail()
 		t.Fatalf("TestBadPath Failed, err was nil")
@@ -95,7 +95,7 @@ func TestBadPath(t *testing.T) {
 }
 
 func TestBadFormat(t *testing.T) {
-	_, err := readStory("../badformatstory.json")
+	_, err := ReadStory("../badformatstory.json")
 	if err == nil {
 		t.Fail()
 		t.Fatalf("TestBadPath Failed, err was nil")
@@ -104,7 +104,7 @@ func TestBadFormat(t *testing.T) {
 }
 
 func TestReadableStory(t *testing.T) {
-	resultStory, err := readStory("../story.json")
+	resultStory, err := ReadStory("../story.json")
 	setupTestStory()
 	if err != nil {
 		t.Fail()
