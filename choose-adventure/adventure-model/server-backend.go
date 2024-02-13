@@ -11,17 +11,32 @@ import (
 
 var currentArc *Arc
 var story *Story
+var errorPage bool
 
 // Defines the thread that runs the actual http server
-func RunServer(inStory *Story, workingSite http.HandlerFunc) {
+func RunServer(inStory *Story, workingSite http.Handler) {
 	story = inStory
 	currentArc = story.arcs["intro"]
+	errorPage = false
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", workingSite)
+	mux.HandleFunc("/", redirectToPage)
+	mux.Handle("/story-page/", http.StripPrefix("/story-page/", workingSite))
 	mux.HandleFunc("/change-arc", changeArc)
 	err := http.ListenAndServe(":3333", mux)
 	if err != nil {
 		panic(err)
+	}
+}
+
+func redirectToPage(w http.ResponseWriter, r *http.Request) {
+	if !errorPage {
+		r.URL.Path = "/story-page/base-page.html"
+		fmt.Printf("Redirecting to %v", r.URL.String())
+		http.RedirectHandler(r.URL.String(), 301).ServeHTTP(w, r)
+	} else {
+		r.URL.Path = "/error-page/"
+		fmt.Printf("Redirecting to %v", r.URL.String())
+		http.RedirectHandler(r.URL.String(), 301).ServeHTTP(w, r)
 	}
 }
 
