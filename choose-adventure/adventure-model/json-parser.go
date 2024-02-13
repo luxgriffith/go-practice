@@ -13,7 +13,7 @@ type Option struct {
 
 // The Object that defines a specific arc
 type Arc struct {
-	text    string
+	text    []string
 	options []*Option
 }
 
