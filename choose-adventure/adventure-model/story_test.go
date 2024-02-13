@@ -50,43 +50,43 @@ func setupTestVars() {
 	}
 	testValidJson = map[string]interface{}{
 		"intro": map[string]interface{}{
-			"options": []map[string]interface{}{
-				{
+			"options": []interface{}{
+				map[string]interface{}{
 					"text": "OptionFoo",
 					"arc":  "Foo",
 				},
-				{
+				map[string]interface{}{
 					"text": "OptionBar",
 					"arc":  "Bar",
 				},
 			},
-			"story": []string{"intro text"},
+			"story": []interface{}{"intro text"},
 			"title": "Intro",
 		},
 		"Foo": map[string]interface{}{
-			"options": []map[string]interface{}{
-				{
+			"options": []interface{}{
+				map[string]interface{}{
 					"text": "OptionBar",
 					"arc":  "Bar",
 				},
 			},
-			"story": []string{"foo", "foo2"},
+			"story": []interface{}{"foo", "foo2"},
 			"title": "Foo",
 		},
 		"Bar": map[string]interface{}{
-			"options": []map[string]interface{}{},
-			"story":   []string{},
+			"options": nil,
+			"story":   nil,
 			"title":   "Bar",
 		},
 	}
 	testInvalidJson = map[string]interface{}{
 		"intro": map[string]interface{}{
-			"options": []map[string]interface{}{
-				{
+			"options": []interface{}{
+				map[string]interface{}{
 					"text": "OptionFoo",
 					"arc":  "Foo",
 				},
-				{
+				map[string]interface{}{
 					"text": "OptionBar",
 					"arc":  "Bar",
 				},

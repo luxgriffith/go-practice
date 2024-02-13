@@ -46,6 +46,9 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 					title = titleContent
 				}
 			case "story":
+				if arcMap[arcMapKey] == nil {
+					continue
+				}
 				storyTextList, ok := arcMap[arcMapKey].([]interface{})
 				if !ok {
 					return errors.New(fmt.Sprintf("Arc %v has a story %v that isn't a list", arcTitle, arcMap[arcMapKey]))
@@ -60,6 +63,9 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 					}
 				}
 			case "options":
+				if arcMap[arcMapKey] == nil {
+					continue
+				}
 				optionsList, isList := arcMap[arcMapKey].([]interface{})
 				if !isList {
 					return errors.New(fmt.Sprintf("Arc %v's options aren't a list", arcTitle))
