@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	adventure_model "github.com/griffithscg/go-practice/choose-adventure/adventure-model"
+	error_page "github.com/griffithscg/go-practice/choose-adventure/adventure-view/error-page"
 )
 
 var currentArc *adventure_model.Arc
@@ -49,6 +50,9 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("could not read body: %s\n", err)
 		writeErrorResponse(w, err)
+		error_page.BuildErrorPage(err)
+		errorPage = true
+		redirectToPage(w, r)
 		return
 	}
 	bodyJson := make(map[string]interface{})
@@ -56,6 +60,9 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("Could not unmarshal json: %s\n", err)
 		writeErrorResponse(w, err)
+		error_page.BuildErrorPage(err)
+		errorPage = true
+		redirectToPage(w, r)
 		return
 	}
 	optionText, ok1 := bodyJson["text"].(string)
@@ -64,6 +71,9 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Option Values are not strings")
 		err := errors.New(fmt.Sprintf("Option Text %v or Option Arc %v are not the correct type (String)", bodyJson["text"], bodyJson["title"]))
 		writeErrorResponse(w, err)
+		error_page.BuildErrorPage(err)
+		errorPage = true
+		redirectToPage(w, r)
 		return
 	}
 	option := adventure_model.NewOption(optionText, optionArcTitle)
@@ -71,6 +81,9 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("Error while getting next arc")
 		writeErrorResponse(w, err)
+		error_page.BuildErrorPage(err)
+		errorPage = true
+		redirectToPage(w, r)
 		return
 	}
 	currentArc = arc
