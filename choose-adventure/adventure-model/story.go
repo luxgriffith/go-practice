@@ -30,13 +30,21 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 		if arcMap == nil || !isMap {
 			return errors.New(fmt.Sprintf("Arc %v isn't tied to a map", arcTitle))
 		}
-		if len(arcMap) != 2 {
-			return errors.New(fmt.Sprintf("Arc %v's map has to many values", arcTitle))
+		if len(arcMap) != 3 {
+			return errors.New(fmt.Sprintf("Arc %v's map has the wrong number of values", arcTitle))
 		}
+		var title string
 		var story []string
 		var options []*Option
 		for arcMapKey := range arcMap {
 			switch arcMapKey {
+			case "title":
+				titleContent, ok := arcMap[arcMapKey].(string)
+				if !ok {
+					return errors.New(fmt.Sprintf("Arc %v's title value isn't a string", arcTitle))
+				} else {
+					title = titleContent
+				}
 			case "options":
 				optionsMapList, isMapList := arcMap[arcMapKey].([]map[string]interface{})
 				if !isMapList {
@@ -82,6 +90,7 @@ func (s *Story) buildFromMap(input map[string]interface{}) error {
 			}
 		}
 		newStory[arcTitle] = &Arc{
+			title:   title,
 			text:    story,
 			options: options,
 		}
@@ -101,13 +110,14 @@ func (s *Story) getArcTitles() []string {
 
 // The Object that defines a specific arc
 type Arc struct {
+	title   string
 	text    []string
 	options []*Option
 }
 
 // Return a string that represents the contents of the arc for testing and debugging purposes
 func (a *Arc) toString() string {
-	out := ""
+	out := a.title + "\t"
 	if a.text != nil {
 		for idx, paragraph := range a.text {
 			out += paragraph

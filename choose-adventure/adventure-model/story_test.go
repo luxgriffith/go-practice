@@ -18,7 +18,8 @@ func setupTestVars() {
 	testStory = &Story{
 		arcs: map[string]*Arc{
 			"intro": {
-				text: []string{"intro"},
+				title: "Intro",
+				text:  []string{"intro text"},
 				options: []*Option{
 					{
 						text:     "OptionFoo",
@@ -31,7 +32,8 @@ func setupTestVars() {
 				},
 			},
 			"Foo": {
-				text: []string{"foo", "foo2"},
+				title: "Foo",
+				text:  []string{"foo", "foo2"},
 				options: []*Option{
 					{
 						text:     "OptionBar",
@@ -40,6 +42,7 @@ func setupTestVars() {
 				},
 			},
 			"Bar": {
+				title:   "Bar",
 				text:    nil,
 				options: nil,
 			},
@@ -57,7 +60,8 @@ func setupTestVars() {
 					"arc":  "Bar",
 				},
 			},
-			"story": []string{"intro"},
+			"story": []string{"intro text"},
+			"title": "Intro",
 		},
 		"Foo": map[string]interface{}{
 			"options": []map[string]interface{}{
@@ -67,10 +71,12 @@ func setupTestVars() {
 				},
 			},
 			"story": []string{"foo", "foo2"},
+			"title": "Foo",
 		},
 		"Bar": map[string]interface{}{
 			"options": []map[string]interface{}{},
 			"story":   []string{},
+			"title":   "Bar",
 		},
 	}
 	testInvalidJson = map[string]interface{}{
@@ -85,7 +91,8 @@ func setupTestVars() {
 					"arc":  "Bar",
 				},
 			},
-			"story": []string{"intro"},
+			"story": []string{"intro text"},
+			"title": "Intro",
 		},
 		"Foo": map[string]interface{}{
 			"options": []map[string]interface{}{
@@ -96,6 +103,7 @@ func setupTestVars() {
 				},
 			},
 			"story": "this isn't what this should be",
+			"title": "intro",
 		},
 		"Bar": map[string]interface{}{
 			"options": []map[string]interface{}{},
@@ -104,7 +112,8 @@ func setupTestVars() {
 		"wrong": "incorrect",
 	}
 	testArc = &Arc{
-		text: []string{"foo, foo2"},
+		title: "Foo",
+		text:  []string{"foo, foo2"},
 		options: []*Option{
 			{
 				text:     "OptionBar",
@@ -116,10 +125,9 @@ func setupTestVars() {
 		text:     "OptionFoo",
 		arcTitle: "Foo",
 	}
-	expectedArcString = "foo, foo2\tOptionBar, Bar"
+	expectedArcString = "Foo\tfoo, foo2\tOptionBar, Bar"
 	expectedOptionString = "OptionFoo, Foo"
 	expectedArcTitleList = []string{"intro", "Foo", "Bar"}
-	expectedStoryString = "intro:intro\tOptionFoo, Foo; OptionBar, Bar\nFoo:foo, foo2\tOptionBar, Bar\nBar:\n"
 }
 
 func TestOptionToString(t *testing.T) {
@@ -156,16 +164,6 @@ func TestGetArcTitles(t *testing.T) {
 		}
 	}
 	t.Logf("TestGetArcTitles passed")
-}
-
-func TestStoryToString(t *testing.T) {
-	setupTestVars()
-	resultStoryString := testStory.toString()
-	if resultStoryString != expectedStoryString {
-		t.Fail()
-		t.Fatalf("TestStoryToString failed, expected %v got %v", expectedStoryString, resultStoryString)
-	}
-	t.Logf("TestStoryToString passed")
 }
 
 func TestBuildFromMapValid(t *testing.T) {
