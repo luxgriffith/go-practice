@@ -11,6 +11,8 @@ var expectedArcTitleList []string
 var testStory *Story
 var testArc *Arc
 var testOption *Option
+var testValidJson map[string]interface{}
+var testInvalidJson map[string]interface{}
 
 func setupTestVars() {
 	testStory = &Story{
@@ -29,7 +31,7 @@ func setupTestVars() {
 				},
 			},
 			"Foo": {
-				text: []string{"foo, foo2"},
+				text: []string{"foo", "foo2"},
 				options: []*Option{
 					{
 						text:     "OptionBar",
@@ -43,7 +45,64 @@ func setupTestVars() {
 			},
 		},
 	}
-
+	testValidJson = map[string]interface{}{
+		"intro": map[string]interface{}{
+			"options": []map[string]interface{}{
+				{
+					"text": "OptionFoo",
+					"arc":  "Foo",
+				},
+				{
+					"text": "OptionBar",
+					"arc":  "Bar",
+				},
+			},
+			"story": []string{"intro"},
+		},
+		"Foo": map[string]interface{}{
+			"options": []map[string]interface{}{
+				{
+					"text": "OptionBar",
+					"arc":  "Bar",
+				},
+			},
+			"story": []string{"foo", "foo2"},
+		},
+		"Bar": map[string]interface{}{
+			"options": []map[string]interface{}{},
+			"story":   []string{},
+		},
+	}
+	testInvalidJson = map[string]interface{}{
+		"intro": map[string]interface{}{
+			"options": []map[string]interface{}{
+				{
+					"text": "OptionFoo",
+					"arc":  "Foo",
+				},
+				{
+					"text": "OptionBar",
+					"arc":  "Bar",
+				},
+			},
+			"story": []string{"intro"},
+		},
+		"Foo": map[string]interface{}{
+			"options": []map[string]interface{}{
+				{
+					"text": "OptionBar",
+					"arc":  "Bar",
+					"bad":  "wrong",
+				},
+			},
+			"story": "this isn't what this should be",
+		},
+		"Bar": map[string]interface{}{
+			"options": []map[string]interface{}{},
+			"story":   []string{},
+		},
+		"wrong": "incorrect",
+	}
 	testArc = &Arc{
 		text: []string{"foo, foo2"},
 		options: []*Option{
@@ -107,4 +166,30 @@ func TestStoryToString(t *testing.T) {
 		t.Fatalf("TestStoryToString failed, expected %v got %v", expectedStoryString, resultStoryString)
 	}
 	t.Logf("TestStoryToString passed")
+}
+
+func TestBuildFromMapValid(t *testing.T) {
+	setupTestVars()
+	var resultStory *Story
+	err := resultStory.buildFromMap(testValidJson)
+	if err != nil {
+		t.Fail()
+		t.Fatalf("TestBuildFromMapValid failed, triggered error %v", err.Error())
+	}
+	if resultStory.toString() != testStory.toString() {
+		t.Fail()
+		t.Fatalf("TestBuildFromMapValid failed, expected %v got %v", testStory.toString(), resultStory.toString())
+	}
+	t.Logf("TestBuildFromMapValid passed")
+}
+
+func TestBuildFromMapInValid(t *testing.T) {
+	setupTestVars()
+	var resultStory *Story
+	err := resultStory.buildFromMap(testValidJson)
+	if err == nil {
+		t.Fail()
+		t.Fatalf("TestBuildFromMapInValid failed, no error triggered")
+	}
+	t.Logf("TestBuildFromMapInValid passed")
 }

@@ -17,6 +17,10 @@ func (s *Story) toString() string {
 	return out
 }
 
+func (s *Story) buildFromMap(map[string]interface{}) error {
+	return nil
+}
+
 // Returns a list of the story's arc titles
 func (s *Story) getArcTitles() []string {
 	arcs := make([]string, 0, len(s.arcs))
