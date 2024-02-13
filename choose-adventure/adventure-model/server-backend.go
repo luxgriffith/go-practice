@@ -13,20 +13,16 @@ var currentArc *Arc
 var story *Story
 
 // Defines the thread that runs the actual http server
-func RunServer(inStory *Story) {
+func RunServer(inStory *Story, workingSite http.HandlerFunc) {
 	story = inStory
 	currentArc = story.arcs["intro"]
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", presentSite)
+	mux.HandleFunc("/", workingSite)
 	mux.HandleFunc("/change-arc", changeArc)
 	err := http.ListenAndServe(":3333", mux)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func presentSite(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(currentArc.toString()))
 }
 
 func changeArc(w http.ResponseWriter, r *http.Request) {
