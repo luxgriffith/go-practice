@@ -51,7 +51,7 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("could not read body: %s\n", err)
 		writeErrorResponse(w, err)
-		error_page.BuildErrorPage(err)
+		error_page.BuildErrorPage(w, err)
 		errorPage = true
 		redirectToPage(w, r)
 		return
@@ -61,7 +61,7 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("Could not unmarshal json: %s\n", err)
 		writeErrorResponse(w, err)
-		error_page.BuildErrorPage(err)
+		error_page.BuildErrorPage(w, err)
 		errorPage = true
 		redirectToPage(w, r)
 		return
@@ -72,7 +72,7 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Option Values are not strings")
 		err := errors.New(fmt.Sprintf("Option Text %v or Option Arc %v are not the correct type (String)", bodyJson["text"], bodyJson["title"]))
 		writeErrorResponse(w, err)
-		error_page.BuildErrorPage(err)
+		error_page.BuildErrorPage(w, err)
 		errorPage = true
 		redirectToPage(w, r)
 		return
@@ -82,7 +82,7 @@ func changeArc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("Error while getting next arc")
 		writeErrorResponse(w, err)
-		error_page.BuildErrorPage(err)
+		error_page.BuildErrorPage(w, err)
 		errorPage = true
 		redirectToPage(w, r)
 		return
