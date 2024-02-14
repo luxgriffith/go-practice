@@ -1,0 +1,77 @@
+{
+    "intro": {
+      "title": "Intro",
+      "story": [
+        "Intro to story",
+        "a paragraph",
+        "another paragraph",
+        "weeeeeeee"
+      ],
+      "options": [
+        {
+          "text": "Option A",
+          "arc": "A"
+        },
+        {
+          "text": "Option B",
+          "arc": "B"
+        },
+        {
+          "text": "Option C",
+          "arc": "C"
+        }
+      ]
+    },
+    "A": {
+      "title": "A",
+      "story": [
+        "Option A's Story",
+        "a paragraph",
+        "another paragraph",
+        "weeeeeeee",
+        "your stuck teehee"
+      ],
+      "options": [
+        {
+          "text": "Option B",
+          "arc": "B"
+        }
+      ]
+    },
+    "B": {
+      "title": "B",
+      "story": [
+        "Option B's Story",
+        "a paragraph",
+        "another paragraph",
+        "weeeeeeee",
+        "jail time"
+      ],
+      "options": [
+        {
+          "text": "Option A",
+          "arc": "A"
+        }
+      ]
+    },
+    "C": {
+      "title": "C",
+      "story": [
+      ],
+      "options": [
+        {
+          "text": "Option D",
+          "arc": "D"
+        }
+      ]
+    },
+    "D": {
+      "title": "D",
+      "story": [
+        "YOU DIED",
+        "insert dark souls noise"
+      ],
+      "options": [
+      ]
+    }
+  }
